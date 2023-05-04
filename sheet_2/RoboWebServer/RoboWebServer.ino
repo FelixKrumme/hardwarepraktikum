@@ -4,8 +4,7 @@
 #include "website.h"
 
 // Add your wifi credentials here
-const char* ssid     = "SecretAP";
-const char* password = "MySuperSecretPassword";
+
 
 // Webserver on port 80 (standard http port)
 WiFiServer server(80);
@@ -109,7 +108,14 @@ void handleClient() {
     
   // Insert code to make the d-pad control working
   // Start by pressing the buttons of the d pad and watch the serial console to see how the get requests look.
-
+  } else if (request.indexOf("GET /left") >= 0) {
+    turn(true, millis(), 100);
+  } else if (request.indexOf("GET /right") >= 0) {
+    turn(false, millis(), 100);
+  } else if (request.indexOf("GET /up") >= 0) {
+    drive(true, millis(), 100);
+  } else if (request.indexOf("GET /back") >= 0) {
+    drive(false, millis(), 100);
   
   // Serve initial Website
   } else {
@@ -125,6 +131,9 @@ float measureDistance(uint8_t pin) {
   // To implement
   return -1;  
 }
+
+// This is of type unsigned long since millis() returns an unsigned long
+unsigned long lastDPadPress;
 
 void turn(bool left, uint16_t time, uint16_t speed) {
   // To implement
